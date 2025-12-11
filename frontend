@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Web Monitoring</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    table { width: 300px; border-collapse: collapse; }
+    td, th { border: 1px solid #999; padding: 8px; }
+  </style>
+</head>
+<body>
+  <h2>Monitoring Perangkat</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Device</th>
+        <th>Status</th>
+        <th>Bandwidth</th>
+      </tr>
+    </thead>
+    <tbody id="device-table"></tbody>
+  </table>
+
+  <script>
+    async function load() {
+      const res = await fetch("http://localhost:8000/devices");
+      const data = await res.json();
+      let html = "";
+      data.forEach(d => {
+        html += `
+          <tr>
+            <td>${d.name}</td>
+            <td>${d.status}</td>
+            <td>${d.bandwidth} Mbps</td>
+          </tr>
+        `;
+      });
+      document.getElementById("device-table").innerHTML = html;
+    }
+    setInterval(load, 2000);
+  </script>
+</body>
+</html>
